@@ -1,0 +1,13 @@
+{
+  "name": "openclaw-hub",
+  "version": "1.0.0",
+  "description": "Unified reverse proxy for OpenClaw Studio, Bot Dashboard, and Gateway",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  }
+}
