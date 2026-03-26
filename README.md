@@ -7,9 +7,9 @@ A lightweight unified reverse proxy that combines all your OpenClaw services und
 | Route | Service |
 |-------|---------|
 | `/` | Landing page (hub overview) |
-| `/studio` | OpenClaw Studio (port 3000) |
-| `/dashboard` | Bot Review Dashboard (port 3001) |
-| `/gateway` | OpenClaw Gateway (port 18789) |
+| `/gateway` | OpenClaw Gateway Control UI (port 18789) |
+| `/studio` | OpenClaw Studio — community dashboard (port 3000) |
+| `/lmstudio` | LM Studio local LLM API (port 1234) |
 
 ## Stack
 
@@ -35,7 +35,7 @@ node server.js
 PORT=8080 node server.js
 
 # Custom upstream ports (if yours differ)
-PORT=8080 STUDIO_PORT=3000 DASHBOARD_PORT=3001 GATEWAY_PORT=18789 node server.js
+PORT=8080 GATEWAY_PORT=18789 STUDIO_PORT=3000 LMSTUDIO_PORT=1234 node server.js
 ```
 
 Open [http://localhost:8080](http://localhost:8080) — you'll see the hub landing page.
@@ -44,9 +44,9 @@ Open [http://localhost:8080](http://localhost:8080) — you'll see the hub landi
 
 Make sure these are already running before starting the hub:
 
-- **OpenClaw Studio** on `:3000` (built into OpenClaw)
-- **[OpenClaw Bot Review Dashboard](https://github.com/xmanrui/OpenClaw-bot-review)** on `:3001`
 - **OpenClaw Gateway** on `:18789`
+- **[OpenClaw Studio](https://github.com/grp06/openclaw-studio)** on `:3000` (community dashboard)
+- **LM Studio** on `:1234` (local LLM server)
 
 ## Auto-start (macOS launchd)
 
@@ -90,4 +90,5 @@ launchctl load ~/Library/LaunchAgents/com.openclaw.hub.plist
 ## Credits
 
 - [OpenClaw](https://github.com/openclaw/openclaw) — the agent platform
-- [OpenClaw Bot Review Dashboard](https://github.com/xmanrui/OpenClaw-bot-review) — by [@xmanrui](https://github.com/xmanrui)
+- [OpenClaw Studio](https://github.com/grp06/openclaw-studio) — community dashboard by [@grp06](https://github.com/grp06)
+- [LM Studio](https://lmstudio.ai/) — local LLM server

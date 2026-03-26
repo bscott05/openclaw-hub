@@ -2,10 +2,10 @@
  * OpenClaw Hub — Unified Reverse Proxy
  *
  * Routes:
- *   /           → Landing page
- *   /studio     → OpenClaw Studio (:3000)
- *   /dashboard  → Bot Review Dashboard (:3001)
- *   /gateway    → OpenClaw Gateway (:18789)
+ *   /          → Landing page
+ *   /gateway   → OpenClaw Gateway (:18789)
+ *   /studio    → OpenClaw Studio (:3000)
+ *   /lmstudio  → LM Studio API (:1234)
  *
  * Usage:
  *   PORT=8080 node server.js
@@ -17,9 +17,9 @@ const httpProxy = require("http-proxy");
 const PORT = process.env.PORT || 8080;
 
 const TARGETS = {
-  studio:    { host: "localhost", port: process.env.STUDIO_PORT    || 3000 },
-  dashboard: { host: "localhost", port: process.env.DASHBOARD_PORT || 3001 },
   gateway:   { host: "localhost", port: process.env.GATEWAY_PORT   || 18789 },
+  studio:    { host: "localhost", port: process.env.STUDIO_PORT    || 3000 },
+  lmstudio:  { host: "localhost", port: process.env.LMSTUDIO_PORT || 1234 },
 };
 
 const proxy = httpProxy.createProxyServer({ ws: true });
@@ -37,7 +37,7 @@ const LANDING = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpenClaw Hub</title>
+  <title>OpenClaw Hub — B's Command Center</title>
   <style>
     :root { --bg: #0d0d0d; --surface: #1a1a1a; --border: #2e2e2e; --accent: #e84949; --text: #f0f0f0; --muted: #888; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,37 +59,37 @@ const LANDING = `<!DOCTYPE html>
 <body>
   <header>
     <div class="logo">🦞</div>
-    <h1>OpenClaw Hub</h1>
-    <p>Your unified command center</p>
+    <h1>OpenClaw Hub — B's Command Center</h1>
+    <p>All services, one door</p>
   </header>
   <div class="grid">
+    <a class="card" href="/gateway">
+      <span class="icon">⚙️</span>
+      <h2>Gateway Control UI</h2>
+      <p>Full OpenClaw dashboard — sessions, agents, config, channels.</p>
+      <span class="tag">:18789 → /gateway</span>
+    </a>
     <a class="card" href="/studio">
       <span class="icon">🖥️</span>
       <h2>OpenClaw Studio</h2>
-      <p>Focused operator studio for the OpenClaw gateway — sessions, agents, channels.</p>
+      <p>Community dashboard — connect to Gateway, manage agents, approvals, and jobs.</p>
       <span class="tag">:3000 → /studio</span>
     </a>
-    <a class="card" href="/dashboard">
-      <span class="icon">📊</span>
-      <h2>Bot Review Dashboard</h2>
-      <p>All agents, models, sessions, stats, skills, alerts, and the pixel office — at a glance.</p>
-      <span class="tag">:3001 → /dashboard</span>
-    </a>
-    <a class="card" href="/gateway">
-      <span class="icon">⚙️</span>
-      <h2>Gateway Control</h2>
-      <p>OpenClaw gateway management, health, and config.</p>
-      <span class="tag">:18789 → /gateway</span>
+    <a class="card" href="/lmstudio">
+      <span class="icon">🧠</span>
+      <h2>LM Studio</h2>
+      <p>Local LLM server running Forge (Nemotron) and Qwen 3.5 9B.</p>
+      <span class="tag">:1234 → /lmstudio</span>
     </a>
   </div>
-  <footer>OpenClaw Hub · Running on port ${PORT}</footer>
+  <footer>OpenClaw Hub · B's Stack · Running on port ${PORT}</footer>
 </body>
 </html>`;
 
 function getTarget(url) {
-  if (url.startsWith("/studio"))    return { key: "studio",    prefix: "/studio" };
-  if (url.startsWith("/dashboard")) return { key: "dashboard", prefix: "/dashboard" };
   if (url.startsWith("/gateway"))   return { key: "gateway",   prefix: "/gateway" };
+  if (url.startsWith("/studio"))    return { key: "studio",    prefix: "/studio" };
+  if (url.startsWith("/lmstudio"))  return { key: "lmstudio",  prefix: "/lmstudio" };
   return null;
 }
 
@@ -118,7 +118,7 @@ server.on("upgrade", (req, socket, head) => {
 
 server.listen(PORT, () => {
   console.log(`\n🦞 OpenClaw Hub running on http://localhost:${PORT}`);
+  console.log(`   /gateway   → http://localhost:${TARGETS.gateway.port}`);
   console.log(`   /studio    → http://localhost:${TARGETS.studio.port}`);
-  console.log(`   /dashboard → http://localhost:${TARGETS.dashboard.port}`);
-  console.log(`   /gateway   → http://localhost:${TARGETS.gateway.port}\n`);
+  console.log(`   /lmstudio  → http://localhost:${TARGETS.lmstudio.port}\n`);
 });
