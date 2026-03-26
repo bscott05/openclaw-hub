@@ -5,6 +5,7 @@
  *   /          → Landing page
  *   /gateway   → OpenClaw Gateway (:18789)
  *   /studio    → OpenClaw Studio (:3000)
+ *   /dashboard → Bot Dashboard Enhanced (:3001)
  *   /lmstudio  → LM Studio API (:1234)
  *
  * Usage:
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 8080;
 const TARGETS = {
   gateway:   { host: "localhost", port: process.env.GATEWAY_PORT   || 18789 },
   studio:    { host: "localhost", port: process.env.STUDIO_PORT    || 3000 },
+  dashboard: { host: "localhost", port: process.env.DASHBOARD_PORT || 3001 },
   lmstudio:  { host: "localhost", port: process.env.LMSTUDIO_PORT || 1234 },
 };
 
@@ -75,6 +77,12 @@ const LANDING = `<!DOCTYPE html>
       <p>Community dashboard — connect to Gateway, manage agents, approvals, and jobs.</p>
       <span class="tag">:3000 → /studio</span>
     </a>
+    <a class="card" href="/dashboard">
+      <span class="icon">📊</span>
+      <h2>Bot Dashboard</h2>
+      <p>Enhanced monitoring — agents, models, sessions, costs, pixel office.</p>
+      <span class="tag">:3001 → /dashboard</span>
+    </a>
     <a class="card" href="/lmstudio">
       <span class="icon">🧠</span>
       <h2>LM Studio</h2>
@@ -89,6 +97,7 @@ const LANDING = `<!DOCTYPE html>
 function getTarget(url) {
   if (url.startsWith("/gateway"))   return { key: "gateway",   prefix: "/gateway" };
   if (url.startsWith("/studio"))    return { key: "studio",    prefix: "/studio" };
+  if (url.startsWith("/dashboard")) return { key: "dashboard", prefix: "/dashboard" };
   if (url.startsWith("/lmstudio"))  return { key: "lmstudio",  prefix: "/lmstudio" };
   return null;
 }
@@ -120,5 +129,6 @@ server.listen(PORT, () => {
   console.log(`\n🦞 OpenClaw Hub running on http://localhost:${PORT}`);
   console.log(`   /gateway   → http://localhost:${TARGETS.gateway.port}`);
   console.log(`   /studio    → http://localhost:${TARGETS.studio.port}`);
+  console.log(`   /dashboard → http://localhost:${TARGETS.dashboard.port}`);
   console.log(`   /lmstudio  → http://localhost:${TARGETS.lmstudio.port}\n`);
 });
