@@ -25,7 +25,8 @@ const SERVICES = [
   { key: "gateway",   name: "Gateway Control UI",  icon: "⚙️",  port: 18789, desc: "Full OpenClaw dashboard — sessions, agents, config, channels." },
   { key: "studio",    name: "OpenClaw Studio",      icon: "🖥️",  port: 3000,  desc: "Community dashboard — connect to Gateway, manage agents, approvals, and jobs." },
   { key: "dashboard", name: "Bot Dashboard",        icon: "📊",  port: 3001,  desc: "Enhanced monitoring — agents, models, sessions, costs, pixel office." },
-  { key: "lmstudio",  name: "LM Studio",            icon: "🧠",  port: 1234,  desc: "Local LLM server running Forge (Nemotron) and Qwen 3.5 9B." },
+  { key: "lmstudio",       name: "LM Studio",            icon: "🧠",  port: 1234,  desc: "Local LLM server running Forge (Nemotron) and Qwen 3.5 9B." },
+  { key: "mission-control", name: "Mission Control",     icon: "🎯",  port: 8092,  desc: "OpenClaw Mission Control Dashboard." },
 ];
 
 /** Check if a TCP port is open (resolves true/false) */
@@ -117,7 +118,9 @@ const server = http.createServer(async (req, res) => {
   if (req.url === "/status") {
     const status = await checkAllServices();
     res.writeHead(200, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
-    return res.end(JSON.stringify(status));
+    return res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET');
+res.end(JSON.stringify(status));
   }
 
   // Everything else → landing page
